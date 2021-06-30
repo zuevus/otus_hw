@@ -1,1 +1,1 @@
-# otus_hw
+# The Otus Mdl Java Developer course 's repository
