@@ -13,9 +13,9 @@ dependencies {
 }
 
 shadowJar {
-    archiveBaseName.set('OtusHello')
-    archiveVersion.set('0.5')
-    archiveClassifier.set('')
+    archiveBaseName.set("OtusHello")
+    archiveVersion.set("0.5")
+    archiveClassifier.set("")
     manifest {
         attributes 'Main-Class': 'ru.otus.HelloOtus'
     }
