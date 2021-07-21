@@ -10,6 +10,7 @@ targetCompatibility = JavaVersion.VERSION_15
 dependencies {
     // This dependency is used by the application.
     implementation 'com.google.guava:guava'
+    implementation 'org.junit.jupiter:junit-jupiter:5.7.0'
 }
 
 shadowJar {
@@ -19,6 +20,10 @@ shadowJar {
     manifest {
         attributes 'Main-Class': 'ru.otus.HelloOtus'
     }
+}
+
+test {
+    useJUnitPlatform()
 }
 
 tasks.build.dependsOn tasks.shadowJar
