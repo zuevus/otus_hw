@@ -1,0 +1,26 @@
+plugins {
+    // Apply the java plugin to add support for Java
+    id 'java'
+    id 'com.github.johnrengelman.shadow'
+}
+
+sourceCompatibility = JavaVersion.VERSION_15
+targetCompatibility = JavaVersion.VERSION_15
+
+dependencies {
+    // This dependency is used by the application.
+    implementation 'com.google.guava:guava'
+    implementation 'junit:junit:4.13.1'
+    implementation 'org.junit.jupiter:junit-jupiter:5.7.2'
+}
+
+shadowJar {
+    archiveBaseName.set("OtusHello")
+    archiveVersion.set("0.5")
+    archiveClassifier.set("")
+    manifest {
+        attributes 'Main-Class': 'ru.otus.HelloOtus'
+    }
+}
+
+tasks.build.dependsOn tasks.shadowJar
