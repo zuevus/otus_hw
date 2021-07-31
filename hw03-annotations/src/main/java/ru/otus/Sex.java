@@ -4,20 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class  Sex {
-    private String[] genders = new String[]{"MALE", "FEMALE"};
     private List<String> particularities = new ArrayList<>();
     private String gender;
     private boolean castrated = false;
 
-
-
-    Sex (String gender) throws Exception {
-        if (gender.indexOf(gender) != -1) {
-            this.gender = gender;
+    public class IncorrectGenderType extends Exception {
+        public IncorrectGenderType(String errorMessage) {
+            super(errorMessage);
         }
-        else {
-            throw new Exception("Passed wrong gender as a parameter!");
-        }
+    }
+
+    Sex (String gType) {
+        this.gender = gType;
     }
 
     public String getGender() {

@@ -58,4 +58,14 @@ public class Horse implements RideAHorse {
     public int getCurrentGate() {
         return currentGate;
     }
+
+    @Override
+    public String toString() {
+        return String.format("Horse name: %s; Horse age: %s; Current gate: %s; Current speed: %s",
+                name,
+                age,
+                horseBreed.getGaits().get(getCurrentGate()),
+                getCurrentSpeed());
+    }
+
 }

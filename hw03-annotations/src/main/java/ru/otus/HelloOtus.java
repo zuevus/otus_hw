@@ -31,33 +31,34 @@ public class HelloOtus {
         List<Breed> breeds = new ArrayList<>(List.of(new Breed("Arabian"),
                 new Breed("Friesian")));
 
+        GenderType gType = new GenderType();
+        Sex fa = new Sex(gType.female);
+        Sex ma = new Sex(gType.male);
+
         List<Horse> horses = new ArrayList<>();
-        try {
-            horses.add(new Horse("Lolly",
-                    breeds.get(0),
-                    new Sex("FEMALE"),
-                    15.0));
-            horses.add(new Horse("Polly",
-                    breeds.get(0),
-                    new Sex("FEMALE"),
-                    10.0));
-            horses.add(new Horse("Molly",
-                    breeds.get(0),
-                    new Sex("FEMALE"),
-                    3.0));
-            horses.add(new Horse("Molly",
-                    breeds.get(0),
-                    new Sex("FEMAL"),
-                    3.0));
-        } catch (Exception exc) {
-            System.out.println(exc);
-        }
+        horses.add(new Horse("Lolly",
+                breeds.get(0),
+                fa,
+               15.0));
+        horses.add(new Horse("Polly",
+                breeds.get(1),
+                fa,
+                10.0));
+        horses.add(new Horse("Molly",
+                breeds.get(0),
+                fa,
+                3.0));
+        horses.add(new Horse("Dolly",
+                breeds.get(1),
+                fa,
+                3.0));
+
 
         //gaits.add(new Gait("walk", 7));
         //gaits.add(new Gait("trot", 13));
         //gaits.add(new Gait("canter", 20));
         //gaits.add(new Gait("gallop", 40));
-        //System.out.println(horses.get(2).getGender().getSex(3));
+        System.out.println(horses);
 
 //
 //        Breed new_breed = new Breed()
