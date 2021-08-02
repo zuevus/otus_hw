@@ -14,7 +14,7 @@ import java.time.Instant;
 
 public class TestRunner {
 
-    public static void main(String... args ) throws ClassNotFoundException,
+    public static void main(String... args ) throws Exception, ClassNotFoundException,
             IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException {
 
         if (args.length > 0) {
@@ -25,64 +25,79 @@ public class TestRunner {
             Method[] methods = clazz.getMethods();
 
             //List because length is unknown
-            List<Method> CMBefore = new ArrayList<>();
-            List<Method> CMAfter = new ArrayList<>();
-            List<Method> CMTests = new ArrayList<>();
+            List<Method> CMBefore = collectAnnotations(methods,"@MyTestRunner.Before()");
+            List<Method> CMAfter = collectAnnotations(methods, "@MyTestRunner.After()");
+            List<Method> CMTests = collectAnnotations(methods, "@MyTestRunner.Test()");
 
-            if (methods.length > 0) {
-                for (Method method : methods) {
-                    Annotation[] annotations = method.getDeclaredAnnotations();
-                    if (annotations.length > 0) {
-                        //Collect all Before annotation
-                        if (annotations[0].toString().equals("@MyTestRunner.Before()")) {
-                            CMBefore.add(method);
-                        }
-                        if (annotations[0].toString().equals("@MyTestRunner.After()")) {
-                            CMAfter.add(method);
-                        }
-                        if (annotations[0].toString().equals("@MyTestRunner.Test()")) {
-                            CMTests.add(method);
-                        }
-                    }
-                }
-            }
-
+            var self = clazz.getDeclaredConstructor().newInstance();
+            Instant pointInTime = Instant.now();
             if (CMTests.size() > 0) {
                 for (Method test_method : CMTests) {
-                    Instant pointInTime = Instant.now();
-                    var self = clazz.getDeclaredConstructor().newInstance();
                     try {
-                        if (CMBefore.size() > 0) {
-                            for (Method before_method : CMBefore) {
-                                System.out.printf("Before routine for the %s method has been run.\n",
-                                        before_method.getName());
-                                before_method.invoke(self);
-                                System.out.printf("Before routine for the %s method has been finished.\n",
-                                        before_method.getName());
-                            }
-                        }
-                        System.out.printf("Test routine the %s method has been run!\n", test_method.getName());
+                        wrapAMethod(CMBefore, self, "initialization");
+                        System.out.printf("The testing procedure provided by the %s has been started.\n!\n",
+                                test_method.getName());
                         test_method.invoke(self);
-                        System.out.printf("Before routine has been finished: %s\n", test_method.getName());
+                        System.out.printf("The testing procedure provided by the %s has been finished.\n",
+                                test_method.getName());
                     } catch (Exception ext) {
                         System.out.printf("The test which provided by %s has been failed!\n The reason is: \n\t%s\n",
                                 test_method.getName(), ext.getCause());
                     }
-                    if (CMAfter.size() > 0) {
-                        for (Method after_method : CMAfter) {
-                            System.out.printf("Cleaning procedure provided by the %s has been started.\n", after_method.getName());
-                            after_method.invoke(self);
-                            System.out.printf("Cleaning procedure provided by the %s has been finished.\n", after_method.getName());
-                        }
-                    }
-                    Duration test_time_execution = Duration.between(pointInTime, Instant.now());
-                    System.out.printf("Period of the test execution is %s nsec\n",
-                            test_time_execution.getNano());
+                    wrapAMethod(CMAfter, self, "finalization");
                 }
             }
+            Duration test_time_execution = Duration.between(pointInTime, Instant.now());
+            System.out.printf("Period of the all test procedure execution is %s nsec\n",
+                    test_time_execution.getNano());
+
         } else {
             System.out.println("Pass class name as the first argument!");
         }
+    }
+
+    private static List<Method> collectAnnotations(Method[] methods, String aClassName) throws Exception{
+        List<Method> CollectionOfAMethods = new ArrayList<>();
+
+        if (methods.length > 0) {
+            for (Method method : methods) {
+                Annotation[] annotations = method.getDeclaredAnnotations();
+
+                if (annotations.length > 0) {
+                    if (annotations[0].toString().equals(aClassName)) { CollectionOfAMethods.add(method); }
+                }
+            }
+            return CollectionOfAMethods;
+        } else {
+            throw new Exception("Methods don't exists");
+        }
+    }
+
+    //private static void startTesting(List<Method> methods, String aClassName) throws Exception{
+
+   // }
+
+    private static boolean wrapAMethod(List<Method> methods, Object self, String procedure) throws Exception{
+
+        if (methods.size() > 0) {
+            for (Method test_method : methods) {
+                Instant pointInTime = Instant.now();
+
+                System.out.printf("The %s procedure provided by the %s has been started.\n",
+                        procedure, test_method.getName());
+                test_method.invoke(self);
+                System.out.printf("The %s procedure provided by the %s has been finished.\n",
+                        procedure, test_method.getName());
+
+                Duration test_time_execution = Duration.between(pointInTime, Instant.now());
+                System.out.printf("Period of the %s method execution is %s nsec\n",
+                        test_method.getName(), test_time_execution.getNano());
+            }
+            return true;
+        } else {
+            return false;
+        }
+
     }
 
 }
