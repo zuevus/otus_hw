@@ -1,3 +1,8 @@
 rootProject.name = 'otusJava'
 include 'hw01-gradle'
 include 'hw03-annotations'
+
+include 'L08-gc'
+include 'L08-gc:homework'
+findProject(':L08-gc:homework')?.name = 'homework'
+
