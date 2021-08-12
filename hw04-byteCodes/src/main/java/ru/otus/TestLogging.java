@@ -1,14 +1,10 @@
 package ru.otus;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.*;
-import java.time.Instant;
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.Arrays;
+import java.util.stream.Stream;
 
 public class TestLogging {
 
@@ -46,13 +42,13 @@ public class TestLogging {
             if (Arrays.asList(this.modify_methods).contains(method)) {
             //Variant B
             //if (this.modify_methods.anyMatch(m -> m.equals(method))) {
-                System.out.printf("Executed method: %s;\n",
+                System.out.printf("\u001B[31mExecuted method: %s;\u001B[0m\n",
                         method.getName()
                 );
                 //Parameter[] parameters = myClass.getClass().getMethod(method.toString()).getParameters();
                 //System.out.printf("Method params: %s",
                  //       Arrays.toString(parameters));
-                System.out.printf("Parameters: %s\n",
+                System.out.printf("\u001B[32m\tParameters: %s\u001B[0m\n",
                         String.join(", ", Arrays.stream(args)
                                 .map(a -> String.format("%s <%s>",
                                         a.toString(),

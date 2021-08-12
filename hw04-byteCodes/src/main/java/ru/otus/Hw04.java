@@ -1,8 +1,6 @@
 package ru.otus;
 
 
-import java.lang.annotation.Annotation;
-
 public class Hw04 {
     public static void main(String... args) {
         DemoInterface demo_log = TestLogging.createDemoClass();
