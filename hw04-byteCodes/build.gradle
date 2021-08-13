@@ -4,8 +4,8 @@ plugins {
     id 'com.github.johnrengelman.shadow'
 }
 
-//sourceCompatibility = JavaVersion.VERSION_15
-//targetCompatibility = JavaVersion.VERSION_15
+sourceCompatibility = JavaVersion.VERSION_14
+targetCompatibility = JavaVersion.VERSION_14
 
 dependencies {
     // This dependency is used by the application.
@@ -13,8 +13,8 @@ dependencies {
 }
 
 shadowJar {
-    archiveBaseName.set("OtusHello")
-    archiveVersion.set("0.5")
+    archiveBaseName.set("byteCodeExec")
+    archiveVersion.set("0.15")
     archiveClassifier.set("")
     manifest {
         attributes 'Main-Class': 'ru.otus.Hw04'
