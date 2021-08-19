@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.Arrays;
+import java.util.Set;
 import java.util.stream.Stream;
 
 public class TestLogging {
@@ -35,7 +36,7 @@ public class TestLogging {
 
         @Override
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-            if (Arrays.asList(this.modify_methods).contains(method)) {
+            if (Set.of(this.modify_methods).contains(method)) {
                 System.out.printf("\u001B[31mExecuted method: %s;\u001B[0m\n",
                         method.getName()
                 );
